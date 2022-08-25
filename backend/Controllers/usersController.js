@@ -16,10 +16,10 @@ const getEmployes = async(req, res) => {
 
 const addEmployee = async(req, res) => {
     const{id, name, email, mobile, role, duty} = req.body
-    console.log({id, name, email, mobile, role, duty})
     try {
         const userExist = await userModel.findOne({id})
-        if(userExist){
+        const emailExist = await userModel.findOne({email})
+        if(userExist || emailExist){
             res.status(201).send(userExist)
         }
         else{
