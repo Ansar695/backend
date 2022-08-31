@@ -90,30 +90,6 @@ router.post("/save_new_user", async(req, res) => {
     }
 })
 
-router.post("/update_user_info", async(req, res) => {
-    const {id, name, mobile, email} = req.body
-    try {
-        const data = await userModel.updateOne(
-            {_id: id},
-            {$set: {name,mobile,email}}
-        )
-        res.status(200).send(data)
-    } catch (error) {
-        console.error(error)
-    }
-})
-
-router.get("/:id", async(req, res) => {
-    const _id = req.params.id
-    try {
-        const data = await userModel.findOne({_id})
-        res.status(200).send(data)
-    } catch (error) {
-        console.error(error)
-    }
-})
-
-
 router.post("/punch/:id", async(req, res) => {
     const _id = req.params.id
 
@@ -131,24 +107,6 @@ router.post("/punch/:id", async(req, res) => {
         console.error(error)
     }
 })
-
-// router.post("/leave/:id", async(req, res) => {
-//     const _id = req.params.id
-
-//     const start = ""
-//     const end = ""
-//     const today = new Date().toDateString()
-//     const leave = "yes";
-
-//     try {
-//         const findUser = await userModel.findOne({_id})
-//         const result = await findUser.generateStartToken(today, start, end, leave)
-//         console.log(result)
-//         res.status(200).send(result)
-//     } catch (error) {
-//         console.error(error)
-//     }
-// })
 
 router.post("/update/:id", async(req, res) => {
     const _id = req.params.id
@@ -205,31 +163,6 @@ router.get("/search/:id", async(req, res) => {
             const result = await userModel.find({})
             res.status(404).send(result)
         }
-    } catch (error) {
-        console.error(error)
-    }
-})
-
-router.post("/search_records", async(req, res) => {
-    const {dateVal, pin} = req.body
-    console.log(dateVal, pin)
-    try {
-        const data = await userModel.findOne(
-            {   pin,
-                'schedule': {
-                    $elemMatch: {
-                        date: dateVal
-                    }
-                }
-            }
-        )
-        let result
-        if(data === null){
-            result = {}
-        }else{
-            result = data
-        }
-        res.status(200).send(result)
     } catch (error) {
         console.error(error)
     }
